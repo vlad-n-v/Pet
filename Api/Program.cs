@@ -1,5 +1,5 @@
 
-namespace Pet
+namespace Api
 {
     public class Program
     {

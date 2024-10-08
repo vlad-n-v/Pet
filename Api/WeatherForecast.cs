@@ -1,4 +1,4 @@
-namespace Pet
+namespace Api
 {
     public class WeatherForecast
     {
