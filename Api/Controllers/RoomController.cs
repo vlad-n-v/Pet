@@ -2,6 +2,10 @@
 using System.Reflection.Metadata.Ecma335;
 using System.Runtime.CompilerServices;
 
+using Data.Stores.Room.DTO;
+
+using Domain.Services.Room;
+
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,87 +14,80 @@ namespace Api.Controllers
 {
     [Route("api/rooms")]
     [ApiController]
-    public class RoomController : ControllerBase
+    public class RoomController : ControllerBase, IRoomController
     {
+        // TODO: как лучше так? или как ниже?
+        // TODO: Может всегда стоит возвращать IActionResult? Какие бестпрасктис?
 
-        #region DTO example
-        private List<RoomDto> _rooms = new List<RoomDto>
-        {
-            new RoomDto{ Id = 1, Number = "101", RoomType = RoomTypes.economy, price = 2003.40m  },
-            new RoomDto{ Id = 2, Number = "102", RoomType = RoomTypes.economy, price = 2045.23m  },
-            new RoomDto{ Id = 3, Number = "103", RoomType = RoomTypes.economy, price = 2544.45m  },
-            new RoomDto{ Id = 4, Number = "104", RoomType = RoomTypes.economy, price = 2473.22m  },
-            new RoomDto{ Id = 5, Number = "201", RoomType = RoomTypes.standard, price = 4510.45m  },
-            new RoomDto{ Id = 6, Number = "202", RoomType = RoomTypes.standard, price = 4863.22m  },
-            new RoomDto{ Id = 7, Number = "203", RoomType = RoomTypes.standard, price = 4398.25m  },
-            new RoomDto{ Id = 8, Number = "204", RoomType = RoomTypes.standard, price = 4125.44m  },
-            new RoomDto{ Id = 9, Number = "301", RoomType = RoomTypes.luxury, price = 6452.34m  },
-            new RoomDto{ Id = 10, Number = "302", RoomType = RoomTypes.luxury, price = 6714.12m  },
-            new RoomDto{ Id = 11, Number = "303", RoomType = RoomTypes.luxury, price = 6712.77m  },
-        };
-
-        public class RoomDto
-        {
-            public long Id { get; set; }
-            public string Number { get; set; }
-            public RoomTypes RoomType { get; set; }
-            public decimal price { get; set; }
-        }
-
-        public enum RoomTypes { economy, standard, luxury }
-        #endregion
+        //[HttpGet]
+        //public IActionResult Get()
+        //{
+        //    Response.StatusCode = 200;
+        //    return new OkObjectResult(new RoomService().Get()) { StatusCode = 200 };
+        //}
 
 
         [HttpGet]
-        public IEnumerable<RoomDto> Get()
+        public IEnumerable<RoomDTO> Get()
         {
-            return _rooms;
+            Response.StatusCode = 200;
+            return new RoomService().Get();
         }
 
 
+
         [HttpGet("{id}")]
-        public RoomDto GetById(long id)
+        public RoomDTO GetById(long id)
         {
-            return _rooms.FirstOrDefault(r => r.Id == id);
+            Response.StatusCode = 200; // TODO: Если не найден что возвращать? и где обрабатывать? в Data?
+            return new RoomService().GetById(id);
         }
 
 
         [HttpPost]
-        public void AddRoom(RoomDto room)
+        public long Create(RoomDTO room)
         {
-            _rooms.Add(room);
+            // TODO: какой обработчик ошибок здесь писать?
+
+            try
+            {
+                Response.StatusCode = 200; // Тут тоже обработку ошибок надо сделать?
+                return new RoomService().Create(room); // TODO: нормальна ли такая запись?  new RoomService().AddRoom(room);
+            }
+            catch (Exception)
+            {
+                Response.StatusCode = 500;
+                return 0; // TODO: Что возвращать long или IActionResult
+            }
         }
 
 
         [HttpPut("{id}")]
-        public ActionResult PutRoom(long id, RoomDto room)
+        public IActionResult Update(long id, RoomDTO room)
         {
-            if (id != room.Id)
+            try
             {
-                return BadRequest();
+                new RoomService().Update(id, room);
+                return Ok();
             }
-
-            RoomDto roomItem = _rooms.Find(r => r.Id == id);
-            if (roomItem == null)
+            catch (Exception e)
             {
-                return NotFound();
+                return BadRequest(e.Message);
             }
-
-            roomItem = room;
-            return Ok();
         }
 
 
         [HttpDelete("{id}")]
-        public ActionResult DeleteRoom(long id)
+        public IActionResult Delete(long id)
         {
-            RoomDto roomIten = _rooms.Find(r => r.Id == id);
-            if (roomIten == null)
-            {
-                return NotFound();
-            }
-            _rooms.Remove(roomIten); 
+            // TODO: Где выполнять эту проверку
+            //RoomDTO roomIten = _rooms.Find(r => r.Id == id);
+            //if (roomIten == null)
+            //{
+            //    return NotFound();
+            //}
 
+            new RoomService().Delete(id);
             return NoContent();
         }
     }

@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 using Data.Stores.Room.DTO;
 
-namespace Domain.Services.Room // TODO: корректно ли здесь ссылаться на модель из слоя данных или нужно свою создавать?
+namespace Data.Stores.Room
 {
-   public interface IRoomService
+    public interface IRoomStore // TODO: интерфейсы всегда паблик?
     {
         public IEnumerable<RoomDTO> Get();
         public RoomDTO GetById(long id);
-        public long Create(RoomDTO room); // TODO: Что возвращать на слое Domain?
+        public long Create(RoomDTO room); // TODO: Что возвращать на слое данных?
         public void Update(long id, RoomDTO room);
         public void Delete(long id);
     }

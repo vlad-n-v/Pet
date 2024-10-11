@@ -4,9 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Services.Room
+namespace Data.Stores.Room.Enum
 {
-    internal class RoomStore
-    {
-    }
+    public enum RoomTypes { economy, standard, luxury }
 }
