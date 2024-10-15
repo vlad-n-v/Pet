@@ -7,12 +7,17 @@ using System.Threading.Tasks;
 using Data.Stores.Room;
 using Data.Stores.Room.DTO;
 
+using Microsoft.VisualBasic;
+
 namespace Domain.Services.Room
 {
     public class RoomService : IRoomService
-    {
+    { 
+        
+
         public IEnumerable<RoomDTO> Get()
         {
+            
             return new RoomStore().Get(); // TODO: нормально ли возвращать вот так возвращать? new? RoomStore()?
         }
 

@@ -30,7 +30,7 @@ namespace Api.Controllers
         [HttpGet]
         public IEnumerable<RoomDTO> Get()
         {
-            Response.StatusCode = 200;
+            Response.StatusCode = 200;            
             return new RoomService().Get();
         }
 
