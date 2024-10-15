@@ -18,7 +18,7 @@ namespace Api
 
             // Add services to the container.
             var services = builder.Services; // TODO: нужно ли объявлять отдельную переменную services? или лучше  builder.Services.RegisterApiDependencies();
-            services.RegisterApiDependencies();
+            services.RegisterApiDependencies(); // TODO: Порядок важен?
             services.RegisterDomainDependencies();
             services.RegisterDataDependencies();           
 
