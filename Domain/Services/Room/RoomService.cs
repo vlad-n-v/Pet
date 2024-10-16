@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Data.Entities;
 using Data.Stores.Room;
-using Data.Stores.Room.DTO;
 
 using Microsoft.VisualBasic;
 
@@ -20,27 +19,27 @@ namespace Domain.Services.Room
             _roomStore = roomStore;
         }
 
-        public IEnumerable<RoomDTO> Get()
+        public IEnumerable<Data.Entities.Room> Get()
         {
 
             return _roomStore.Get(); // TODO: нормально ли возвращать вот так возвращать? new? RoomStore()?
         }
 
 
-        public RoomDTO GetById(long id)
+        public Data.Entities.Room GetById(long id)
         {
             return _roomStore.GetById(id); // TODO: Нужно ли создавать переменную Result или нужно сразу возвращать результат
         }
 
 
-        public long Create(RoomDTO roomDTO)
+        public long Create(Data.Entities.Room roomDTO)
         {
             long roomId = _roomStore.Create(roomDTO);// TODO: Выглядит странно new RoomStore().AddRoom(roomDTO);
             if (roomId == 0) { throw new Exception("the 'Room' object could not be created"); } // TODO: какой тип эксепшена?
             return roomId;
         }
 
-        public void Update(long id, RoomDTO room)
+        public void Update(long id, Data.Entities.Room room)
         {
             if (id != room.Id)
             {
