@@ -7,27 +7,37 @@ using System.Threading.Tasks;
 using Data.Stores.Room;
 using Data.Stores.Room.DTO;
 
+using Microsoft.VisualBasic;
+
 namespace Domain.Services.Room
 {
     public class RoomService : IRoomService
     {
+        private readonly IRoomStore _roomStore; //TODO: почему реадонли?
+
+        public RoomService(IRoomStore roomStore)
+        {
+            _roomStore = roomStore;
+        }
+
         public IEnumerable<RoomDTO> Get()
         {
-            return new RoomStore().Get(); // TODO: нормально ли возвращать вот так возвращать? new? RoomStore()?
+
+            return _roomStore.Get(); // TODO: нормально ли возвращать вот так возвращать? new? RoomStore()?
         }
 
 
         public RoomDTO GetById(long id)
         {
-            return new RoomStore().GetById(id); // TODO: Нужно ли создавать переменную Result или нужно сразу возвращать результат
+            return _roomStore.GetById(id); // TODO: Нужно ли создавать переменную Result или нужно сразу возвращать результат
         }
 
 
         public long Create(RoomDTO roomDTO)
         {
-            long roomId = new RoomStore().Create(roomDTO);// TODO: Выглядит странно new RoomStore().AddRoom(roomDTO);
+            long roomId = _roomStore.Create(roomDTO);// TODO: Выглядит странно new RoomStore().AddRoom(roomDTO);
             if (roomId == 0) { throw new Exception("the 'Room' object could not be created"); } // TODO: какой тип эксепшена?
-            return roomId; 
+            return roomId;
         }
 
         public void Update(long id, RoomDTO room)
@@ -43,12 +53,12 @@ namespace Domain.Services.Room
             //    return NotFound();
             //}
 
-            new RoomStore().Update(id, room);
+            _roomStore.Update(id, room);
         }
 
         public void Delete(long id)
         {
-            new RoomStore().Delete(id);
+            _roomStore.Delete(id);
         }
     }
 }
