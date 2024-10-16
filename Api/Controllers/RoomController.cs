@@ -28,41 +28,53 @@ namespace Api.Controllers
 
         private readonly IRoomService _roomService; //TODO: не понял как это работает. где вызывается конструктор класса?
 
-        public RoomController(IRoomService roomService) //TODO: как в конструктор попадает именно эта служжба. Я указал только интерфейс. А если будет 2 службы с одинаковым интерфейсом?
+        public RoomController(IRoomService roomService) //TODO: как в конструктор попадает именно эта служба. Я указал только интерфейс. А если будет 2 службы с одинаковым интерфейсом?
         {
             _roomService = roomService; //TODO: как именовать? _roomService или roomService
         }
 
         [HttpGet]
-        public IEnumerable<RoomDTO> Get()
+        [ProducesResponseType<IEnumerable<RoomDTO>>(StatusCodes.Status200OK)] // TODO: Нужна ли такая запись? SonarLint предлагает явно описывать возвращаемый тип
+        public IActionResult Get()
         {
-            Response.StatusCode = 200;
-            return _roomService.Get();            
+            try
+            {
+                IEnumerable<RoomDTO> result = _roomService.Get(); // TODO: Создавать дополнительную переменную или сразу передавать в конструктор  return this.Ok(_roomService.Get());
+                return this.Ok(result); // TODO: this.Ok(result); или Ok(result);
+            }
+            catch
+            {
+                return this.BadRequest();
+            }
         }
 
 
         [HttpGet("{id}")]
-        public RoomDTO GetById(long id)
+        public IActionResult GetById(long id)
         {
-            Response.StatusCode = 200; // TODO: Если не найден что возвращать? и где обрабатывать? в Data?
-            return _roomService.GetById(id);
+            try
+            {
+                RoomDTO result = _roomService.GetById(id);
+                return this.Ok(result);
+            }
+            catch
+            {
+                return this.BadRequest();
+            }
         }
 
 
         [HttpPost]
-        public long Create(RoomDTO room)
+        public IActionResult Create(RoomDTO room)
         {
-            // TODO: какой обработчик ошибок здесь писать?
-
             try
             {
-                Response.StatusCode = 200; // Тут тоже обработку ошибок надо сделать?
-                return _roomService.Create(room); // TODO: нормальна ли такая запись?  new RoomService().AddRoom(room);
+                long result = _roomService.Create(room);
+                return this.Created("", result); // TODO: Какую url указывать в Created(url, result)
             }
             catch (Exception)
             {
-                Response.StatusCode = 500;
-                return 0; // TODO: Что возвращать long или IActionResult
+                return this.BadRequest();
             }
         }
 
@@ -72,8 +84,8 @@ namespace Api.Controllers
         {
             try
             {
-               _roomService.Update(id, room);
-                return Ok(); // TODO: Что возвращать?
+                _roomService.Update(id, room);
+                return Ok(); // TODO: Что возвращать? типовые коды
             }
             catch (Exception e)
             {
@@ -93,7 +105,7 @@ namespace Api.Controllers
             //}
 
             _roomService.Delete(id);
-            return NoContent();
+            return NoContent(); // TODO: Что возвращать? типовые кодыы
         }
     }
 }
