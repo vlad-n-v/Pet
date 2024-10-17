@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using Domain.Services.Room;
+using Data.Entities;
+
+using Domain.Services.Rooms;
 
 using Microsoft.Extensions.DependencyInjection;
 
@@ -14,7 +16,7 @@ namespace Domain.Extensions
     {
         public static void RegisterDomainDependencies(this IServiceCollection services)
         {
-            services.AddTransient<IRoomService, RoomService>();
+            services.AddTransient<IRoomService<Room>, RoomService>();
         }
     }
 }
