@@ -16,7 +16,7 @@ namespace Data.Extensions
     {
         public static void RegisterDataDependencies(this IServiceCollection services)
         {
-            services.AddTransient<IRepository<Room>, RepositoryRoom>();
+            services.AddTransient<IRepository, RepositoryRoom>();
         }
     }
 }

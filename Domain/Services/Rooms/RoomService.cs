@@ -14,7 +14,7 @@ namespace Domain.Services.Rooms
 {
     public class RoomService : IRoomService<Room>
     {
-        private readonly IRepository<Room> repository;//TODO: почему реадонли?
+        private readonly IRepository<Room> repository; // TODO: почему реадонли?
 
         public RoomService(IRepository<Room> repository)
         {
@@ -34,7 +34,10 @@ namespace Domain.Services.Rooms
         public async Task<long> CreateAsync(Room room)
         {
             long roomId = await repository.CreateAsync(room);
-            if (roomId == 0) { throw new Exception("the 'Room' object could not be created"); } // TODO: какой тип эксепшена?
+            if (roomId == 0)
+            {
+                throw new Exception("the 'Room' object could not be created");
+            } // TODO: какой тип эксепшена?
             return roomId;
         }
 
@@ -48,13 +51,13 @@ namespace Domain.Services.Rooms
             if (id != room.Id)
             {
                 throw new ArgumentException("'id' not match 'room.id'");
-            }        
+            }
             await repository.UpdateAsync(id, room);
         }
 
         public async Task DeleteAsync(long id)
         {
             await repository.DeleteAsync(id);
-        }             
+        }
     }
 }

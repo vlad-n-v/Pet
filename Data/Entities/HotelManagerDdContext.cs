@@ -10,10 +10,10 @@ using Microsoft.Extensions.Configuration;
 
 namespace Data.Entities
 {
-    public partial class HotelManagerDdContext : DbContext // TODO: Всегда создается partial class?
+    public class HotelManagerDdContext : DbContext // TODO: Всегда создается partial class?
     {
-        public DbSet<Room> Rooms { get; set; } = null!; // TODO: Зачем = null!
-        // TODO: когда добавляем таблицы имя миграции как пишем? Add_Rooms ? какие вообще правила есть?
+        public DbSet<Room> Rooms { get; set; }  
+       
         public HotelManagerDdContext()
         {
             Database.EnsureCreated();
@@ -21,9 +21,12 @@ namespace Data.Entities
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            // TODO: appsettings.json находится в директории API и в Data.
+            // TODO: appsettings.json находится в директории API и в Data. 
             // Пришлось, потому что при запуске приложения выполняется API, а при миграции я выполняю Data. Как в этом случае принято поступать
             // При миграции я переключаю запускаемый проект вместо API ставлю Data. Так и надо? 
+
+            /////// appsettings.json регистрируется так же как и DI Container
+
             var config = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json")
                 .SetBasePath(Directory.GetCurrentDirectory())

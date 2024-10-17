@@ -7,7 +7,7 @@ using Data.Entities;
 
 namespace Data.Stores.Rooms
 {
-    [Obsolete]
+    [Obsolete]// убираем всё. оставляем репозиторий
     public interface IRoomStore // TODO: интерфейсы всегда паблик?
     {
         public IEnumerable<Room> Get();

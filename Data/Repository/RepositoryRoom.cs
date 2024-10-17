@@ -11,13 +11,13 @@ using Microsoft.VisualBasic;
 
 namespace Data.Repository
 {
-    public class RepositoryRoom : IRepository<Room>
+    public class RepositoryRoom : IRepository
     {
         protected readonly HotelManagerDdContext db;
 
         public RepositoryRoom()
         {
-            this.db = new HotelManagerDdContext();
+            this.db = new HotelManagerDdContext();  // AddDbContext Убрать new    
         }
 
         async public Task<List<Room>> GetAsync()
@@ -40,7 +40,7 @@ namespace Data.Repository
 
         async public Task UpdateAsync(long id, Room room)
         {
-            Room roomItem = await db.Rooms.FindAsync(id); // TODO: FirstOrDefault vs Find
+            Room roomItem = await db.Rooms.FindAsync(id); // TODO: FirstOrDefault 
             if (roomItem != null)
             {
                 roomItem = room;
