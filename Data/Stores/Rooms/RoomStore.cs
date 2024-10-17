@@ -12,19 +12,14 @@ using Data.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration; // TODO: спросить как лучше using или полный путь
 
-namespace Data.Stores.Room
+namespace Data.Stores.Rooms
 {
+    [Obsolete]
     public class RoomStore : IRoomStore
     {
         private static HotelManagerDdContext hotelManagerDBContext = new HotelManagerDdContext(); // TODO: Зачем тут static. написал потому что ругался компилятор.
 
-        private DbSet<Entities.Room> _rooms = hotelManagerDBContext.Rooms; // TODO: Где инициализировать таблицы. Здесь или в конструкторе?
-
-        public RoomStore()
-        {        
-            
-        }
-
+        private DbSet<Room> _rooms = hotelManagerDBContext.Rooms; // TODO: Где инициализировать таблицы. Здесь или в конструкторе?
 
         //private List<Entities.Room> _rooms = new List<Entities.Room> // TODO: как называть такие переменные? _rooms
         //{
@@ -42,19 +37,19 @@ namespace Data.Stores.Room
         //};
 
 
-        public IEnumerable<Entities.Room> Get() // TODO: Что возвращать IEnumerable или List?
+        public IEnumerable<Room> Get() // TODO: Что возвращать IEnumerable или List?
         {
             return _rooms;
         }
 
 
-        public async Task<Entities.Room> GetById(long id) // TODO: нейминг id или ID
+        public async Task<Room> GetById(long id) // TODO: нейминг id или ID
         {
             return await _rooms.FirstOrDefaultAsync(r => r.Id == id); // TODO: FirstOrDefault vs First
         }
 
 
-        public long Create(Entities.Room room)
+        public long Create(Room room)
         {
             _rooms.AddAsync(room);
             hotelManagerDBContext.SaveChangesAsync();
@@ -62,18 +57,18 @@ namespace Data.Stores.Room
         }
 
 
-        public void Update(long id, Entities.Room room) // TODO: Что возвращать на этом слое?
+        public void Update(long id, Room room) // TODO: Что возвращать на этом слое?
         {
             // TODO: проверка id на null
             //Entities.Room roomItem = _rooms.Find(r => r.Id == id); // TODO: FirstOrDefault vs First
-            Entities.Room roomItem = _rooms.Find(id); // TODO: FirstOrDefault vs First
+            Room roomItem = _rooms.Find(id); // TODO: FirstOrDefault vs First
             roomItem = room;
         }
 
 
         public void Delete(long id) // TODO: поговорить про транзакции. Где нужны?
         {
-            Entities.Room roomItem = _rooms.Find(id);
+            Room roomItem = _rooms.Find(id);
             if (roomItem != null) // TODO: что лучше if (roomIten == null) return; или if (roomItem != null) {действие}
             {
                 _rooms.Remove(roomItem);

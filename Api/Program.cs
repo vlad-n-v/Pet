@@ -6,10 +6,10 @@ using Api.Extensions;
 
 using Data.Entities;
 using Data.Extensions;
-using Data.Stores.Room;
+using Data.Stores.Rooms;
 
 using Domain.Extensions;
-using Domain.Services.Room;
+using Domain.Services.Rooms;
 
 using Microsoft.EntityFrameworkCore;
 

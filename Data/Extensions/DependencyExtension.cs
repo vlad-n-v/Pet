@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Data.Stores.Room;
+
+using Data.Entities;
+using Data.Repository;
+using Data.Stores.Rooms;
 
 using Microsoft.Extensions.DependencyInjection;
 
@@ -13,7 +16,7 @@ namespace Data.Extensions
     {
         public static void RegisterDataDependencies(this IServiceCollection services)
         {
-            services.AddTransient<IRoomStore, RoomStore>();
+            services.AddTransient<IRepository<Room>, RepositoryRoom>();
         }
     }
 }
