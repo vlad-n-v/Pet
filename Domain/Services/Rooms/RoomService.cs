@@ -1,60 +1,70 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data;
 
 using Data.Entities;
 using Data.Repository;
-using Data.Stores.Rooms;
-
-using Microsoft.VisualBasic;
 
 namespace Domain.Services.Rooms
 {
-    public class RoomService : IRoomService<Room>
+    public class RoomService : IRoomService
     {
-        private readonly IRepository<Room> repository;//TODO: почему реадонли?
+        private readonly IRoomRepository roomRepository;
 
-        public RoomService(IRepository<Room> repository)
+        public RoomService(IRoomRepository repository)
         {
-            this.repository = repository;
+            this.roomRepository = repository;
         }
+
 
         public async Task<List<Room>> GetAsync()
         {
-            return await repository.GetAsync();
+            List<Room> rooms = await roomRepository.GetAsync();
+            if (rooms == null || !rooms.Any())
+            {
+                throw new Exception("'Rooms' not found in the 'roomRepository'");
+            }
+            return await roomRepository.GetAsync();
         }
+
 
         public async Task<Room> GetByIdAsync(long id)
         {
-            return await repository.GetByIdAsync(id);// TODO: Нужно ли создавать переменную Result или нужно сразу возвращать результат
+            Room roomItem = await roomRepository.GetByIdAsync(id);
+            if (roomItem == null)
+            {
+                throw new Exception("The 'Room' object with the specified 'ID' not found");
+            }
+            return await roomRepository.GetByIdAsync(id);
         }
+
 
         public async Task<long> CreateAsync(Room room)
         {
-            long roomId = await repository.CreateAsync(room);
-            if (roomId == 0) { throw new Exception("the 'Room' object could not be created"); } // TODO: какой тип эксепшена?
+            long roomId = await roomRepository.CreateAsync(room);
+            if (roomId == 0)
+            {
+                throw new Exception("The 'Room' object could not be created");
+            } 
             return roomId;
         }
 
+
         public async Task UpdateAsync(long id, Room room)
         {
-            // TODO: эту ошибку нужно отлавливать на слое Data? Как тогда передавать ошибку? Какие практики?
-            //if (roomItem == null) 
-            //{
-            //    return NotFound();
-            //}
+            if (room == null) 
+            {
+                throw new Exception("The 'Room' should not be 'Null'");
+            }
             if (id != room.Id)
             {
-                throw new ArgumentException("'id' not match 'room.id'");
-            }        
-            await repository.UpdateAsync(id, room);
+                throw new ArgumentException("'Id' not match 'Room.Id'");
+            }
+            await roomRepository.UpdateAsync(id, room);
         }
+
 
         public async Task DeleteAsync(long id)
         {
-            await repository.DeleteAsync(id);
-        }             
+            await roomRepository.DeleteAsync(id);
+        }
     }
 }

@@ -1,8 +1,8 @@
 ﻿using Data.Entities;
 
-namespace Domain.Services.Rooms
+namespace Data.Repository
 {
-    public interface IRoomService
+    public interface IRoomRepository
     {
         public Task<List<Room>> GetAsync();
         public Task<Room> GetByIdAsync(long id);

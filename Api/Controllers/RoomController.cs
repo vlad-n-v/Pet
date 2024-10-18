@@ -1,12 +1,7 @@
-﻿using System.Collections.ObjectModel;
-using System.Reflection.Metadata.Ecma335;
-using System.Runtime.CompilerServices;
-
-using Data.Entities;
+﻿using Data.Entities;
 
 using Domain.Services.Rooms;
 
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -14,37 +9,28 @@ namespace Api.Controllers
 {
     [Route("api/rooms")]
     [ApiController]
-    public class RoomController : ControllerBase, IRoomController<Room>
+    public class RoomController : ControllerBase, IRoomController
     {
-        // TODO: как лучше так? или как ниже?
-        // TODO: Может всегда стоит возвращать IActionResult? Какие бестпрасктис?
 
-        //[HttpGet]
-        //public IActionResult Get()
-        //{
-        //    Response.StatusCode = 200;
-        //    return new OkObjectResult(new RoomService().Get()) { StatusCode = 200 };
-        //}
+        private readonly IRoomService _roomService;
 
-        private readonly IRoomService<Room> _roomService; //TODO: не понял как это работает. где вызывается конструктор класса?
-
-        public RoomController(IRoomService<Room> roomService) //TODO: как в конструктор попадает именно эта служба. Я указал только интерфейс. А если будет 2 службы с одинаковым интерфейсом?
+        public RoomController(IRoomService roomService)
         {
-            _roomService = roomService; //TODO: как именовать? _roomService или roomService
+            _roomService = roomService;
         }
 
+
         [HttpGet]
-        [ProducesResponseType<IEnumerable<Room>>(StatusCodes.Status200OK)] // TODO: Нужна ли такая запись? SonarLint предлагает явно описывать возвращаемый тип
         public async Task<IActionResult> GetAsync()
         {
             try
             {
-                IEnumerable<Room> result =  await _roomService.GetAsync(); // TODO: Создавать дополнительную переменную или сразу передавать в конструктор  return this.Ok(_roomService.Get());
-                return this.Ok(result); // TODO: this.Ok(result); или Ok(result);
+                IEnumerable<Room> result = await _roomService.GetAsync();
+                return Ok(result);
             }
-            catch
+            catch (Exception ex)
             {
-                return this.BadRequest();
+                return BadRequest(ex.Message);
             }
         }
 
@@ -55,41 +41,46 @@ namespace Api.Controllers
             try
             {
                 Room result = await _roomService.GetByIdAsync(id);
-                return this.Ok(result);
+                return Ok(result);
             }
-            catch
+            catch (Exception ex)
             {
-                return this.BadRequest();
+                return BadRequest(ex.Message);
             }
         }
 
 
         [HttpPost]
-        public async Task<IActionResult> CreateAsync(Room room) // TODO: Почему я ID указываю при вставке? Мне же база его должна вернуть?
+        public async Task<IActionResult> CreateAsync(Room room)
         {
             try
             {
-                long result = await _roomService.CreateAsync(room);
-                return this.Created("", result); // TODO: Какую url указывать в Created(url, result)
+                long romId = await _roomService.CreateAsync(room);
+                return Created("", romId);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return this.BadRequest();
+                return BadRequest(ex.Message);
             }
         }
 
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateAsync(long id, Room room)  //TODO: везде будет RoomDTO? Это объект слоя базы данных.
+        public async Task<IActionResult> UpdateAsync(long id, Room room)
         {
             try
             {
                 await _roomService.UpdateAsync(id, room);
-                return Ok(); // TODO: Что возвращать? типовые коды
+                return Ok();
             }
-            catch (Exception e)
+
+            catch (ArgumentException ex)
             {
-                return BadRequest(e.Message);
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
             }
         }
 
@@ -97,15 +88,8 @@ namespace Api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAsync(long id)
         {
-            // TODO: Где выполнять эту проверку
-            //RoomDTO roomIten = _rooms.Find(r => r.Id == id);
-            //if (roomIten == null)
-            //{
-            //    return NotFound();
-            //}
-
             await _roomService.DeleteAsync(id);
-            return NoContent(); // TODO: Что возвращать? типовые кодыы
+            return Ok();
         }
     }
 }

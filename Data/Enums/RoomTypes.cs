@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Data.Enums
+﻿namespace Data.Enums
 {
-    public enum RoomTypes { economy, standard, luxury }
+    public enum RoomTypes { Economy, Standard, Luxury }
 }
