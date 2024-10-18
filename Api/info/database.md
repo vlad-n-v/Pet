@@ -18,7 +18,7 @@
    - Сделать методы в IRoomStore/RoomStore асинхронными
    - Реализовать RoomRepository, используя HotelManagerDbContext для операций с базой данных
 
-4. Core проект:
+4. Core проект: 
    - Убедиться, что RoomDTO соответствует сущности Room из Data проекта
 
 5. Domain проект:
