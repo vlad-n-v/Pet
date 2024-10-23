@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Domain.Services.Room;
-
+﻿using Domain.Services.Rooms;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Domain.Extensions
