@@ -1,6 +1,5 @@
 ﻿using Data.Entities;
 using Data.Repository;
-
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

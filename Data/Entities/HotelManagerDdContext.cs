@@ -12,7 +12,6 @@ namespace Data.Entities
             Database.EnsureCreated();
         }
 
-
         public HotelManagerDdContext(DbContextOptions<HotelManagerDdContext> options) : base(options)
         {
 

@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-
 using Data.Enums;
 
 namespace Data.Entities
@@ -8,7 +7,7 @@ namespace Data.Entities
     {
         [Key]
         public long Id { get; set; }
-        public required string Number { get; set; }
+        public string Number { get; set; }
         public RoomTypes RoomType { get; set; }
         public decimal Price { get; set; }
     }

@@ -1,7 +1,5 @@
 using Api.Extensions;
-
 using Data.Extensions;
-
 using Domain.Extensions;
 
 namespace Api

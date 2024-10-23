@@ -1,5 +1,4 @@
 ﻿using Domain.Services.Rooms;
-
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Domain.Extensions

@@ -1,4 +1,9 @@
 ﻿namespace Data.Enums
 {
-    public enum RoomTypes { Economy, Standard, Luxury }
+    public enum RoomTypes
+    {
+        Economy,
+        Standard,
+        Luxury
+    }
 }

@@ -1,9 +1,6 @@
 ﻿using Data.Entities;
-
 using Domain.Services.Rooms;
-
 using Microsoft.AspNetCore.Mvc;
-
 
 namespace Api.Controllers
 {
@@ -66,21 +63,20 @@ namespace Api.Controllers
 
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateAsync(long id, Room room)
+        public async Task<IActionResult> UpdateAsync(Room room)
         {
             try
             {
-                await _roomService.UpdateAsync(id, room);
-                return Ok();
+                await _roomService.UpdateAsync(room);
+                return CreatedAtAction(nameof(GetByIdAsync), new { id = room.Id }, room); // TODO: В учебниках много раз видел такой пример.
             }
-
             catch (ArgumentException ex)
             {
                 return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError); // TODO: Выбивается из стиля. Как правильно?
             }
         }
 
@@ -88,7 +84,7 @@ namespace Api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAsync(long id)
         {
-            await _roomService.DeleteAsync(id);
+            await _roomService.DeleteAsync(id);  // TODO: Тоже непонятно что возвращать.
             return Ok();
         }
     }
