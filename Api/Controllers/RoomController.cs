@@ -1,6 +1,7 @@
 ﻿using Data.Entities;
 using Domain.Services.Rooms;
 using Microsoft.AspNetCore.Mvc;
+using static Core.DTOs.Models.RoomDTO;
 
 namespace Api.Controllers
 {
@@ -22,7 +23,7 @@ namespace Api.Controllers
         {
             try
             {
-                IEnumerable<Room> result = await _roomService.GetAsync();
+                IEnumerable<RoomResponseDto> result = await _roomService.GetAsync();
                 return Ok(result);
             }
             catch (Exception ex)
@@ -37,7 +38,7 @@ namespace Api.Controllers
         {
             try
             {
-                Room result = await _roomService.GetByIdAsync(id);
+                RoomResponseDto result = await _roomService.GetByIdAsync(id);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -48,7 +49,7 @@ namespace Api.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> CreateAsync(Room room)
+        public async Task<IActionResult> CreateAsync(CreateRoomDto room)
         {
             try
             {
@@ -62,13 +63,13 @@ namespace Api.Controllers
         }
 
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateAsync(Room room)
+        [HttpPut]
+        public async Task<IActionResult> UpdateAsync(UpdateRoomDto room)
         {
             try
             {
                 await _roomService.UpdateAsync(room);
-                return CreatedAtAction(nameof(GetByIdAsync), new { id = room.Id }, room); // TODO: В учебниках много раз видел такой пример.
+                return await GetByIdAsync(room.Id);
             }
             catch (ArgumentException ex)
             {
@@ -76,7 +77,7 @@ namespace Api.Controllers
             }
             catch (Exception ex)
             {
-                return new StatusCodeResult(StatusCodes.Status500InternalServerError); // TODO: Выбивается из стиля. Как правильно?
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
             }
         }
 
@@ -84,7 +85,7 @@ namespace Api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAsync(long id)
         {
-            await _roomService.DeleteAsync(id);  // TODO: Тоже непонятно что возвращать.
+            await _roomService.DeleteAsync(id);
             return Ok();
         }
     }

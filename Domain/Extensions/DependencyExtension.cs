@@ -7,7 +7,7 @@ namespace Domain.Extensions
     {
         public static void RegisterDomainDependencies(this IServiceCollection services)
         {
-            services.AddTransient<IRoomService, RoomService>();
+            services.AddTransient<IRoomService, RoomService>();           
         }
     }
 }

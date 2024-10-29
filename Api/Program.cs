@@ -6,7 +6,7 @@ namespace Api
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static void Main(string[] args) // TODO: Куда всё-таки прописывать connection? Пришлось устанавливать пакет EFCoreDesign в API, миграции не работают.
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +14,8 @@ namespace Api
             builder.Services.RegisterApiDependencies();
             builder.Services.RegisterDomainDependencies();
             builder.Services.RegisterDataDependencies();
+            builder.Services.AddAutoMapper(typeof(Program).Assembly);
+            builder.Services.AddControllersWithViews();
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

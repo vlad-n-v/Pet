@@ -38,10 +38,12 @@ namespace Data.Repository
 
         public async Task UpdateAsync(Room room)
         {
-            Room roomItem = await _hotelManagerDbContext.Rooms.FirstOrDefaultAsync(r =>r.Id==room.Id);
+            Room roomItem = await _hotelManagerDbContext.Rooms.FirstOrDefaultAsync(r => r.Id == room.Id);
             if (roomItem != null)
             {
-                roomItem = room;
+                roomItem.Number = room.Number; // TODO: А как тут делать? тоже маппером пользоваться?
+                roomItem.RoomType = room.RoomType;
+                room.Price = room.Price; 
                 await _hotelManagerDbContext.SaveChangesAsync();
             }
         }

@@ -2,9 +2,8 @@
 
 namespace Core.DTOs.Models
 {
-    public class Room
+    public class RoomDTO
     {
-
         public class RoomResponseDto
         {
             public long Id { get; set; }
@@ -14,10 +13,10 @@ namespace Core.DTOs.Models
         }
 
 
-        public class CreateRoomDto // TODO: ID не принимаем назначается базой
+        public class CreateRoomDto
         {
             public string Number { get; set; }
-            public RoomTypes RoomType { get; set; } // TODO: Ссылка на Data.Enums Нужно ли отдельный енам создавать?
+            public RoomTypes RoomType { get; set; }
             public decimal Price { get; set; }
         }
 
@@ -29,6 +28,5 @@ namespace Core.DTOs.Models
             public RoomTypes RoomType { get; set; }
             public decimal Price { get; set; }
         }
-
     }
 }
