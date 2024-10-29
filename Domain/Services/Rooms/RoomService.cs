@@ -41,24 +41,25 @@ namespace Domain.Services.Rooms
         }
 
 
-        public async Task<long> CreateAsync(CreateRoomDto room)
+        public async Task<RoomResponseDto> CreateAsync(CreateRoomDto room)
         {
-            long roomId = await _roomRepository.CreateAsync(_mapper.Map<Room>(room));
-            if (roomId == 0)
+            Room roomItem = await _roomRepository.CreateAsync(_mapper.Map<Room>(room));
+            if (roomItem == null)
             {
                 throw new Exception("The 'Room' object could not be created");
             }
-            return roomId;
+            return _mapper.Map<RoomResponseDto>(roomItem);
         }
 
 
-        public async Task UpdateAsync(UpdateRoomDto room)
+        public async Task<RoomResponseDto> UpdateAsync(UpdateRoomDto room)
         {
             if (room == null)
             {
                 throw new Exception("The 'Room' should not be 'Null'");
             }
-            await _roomRepository.UpdateAsync(_mapper.Map<Room>(room));
+            Room roomItem = await _roomRepository.UpdateAsync(_mapper.Map<Room>(room));
+            return _mapper.Map<RoomResponseDto>(roomItem);
         }
 
 

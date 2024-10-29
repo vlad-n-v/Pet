@@ -1,7 +1,11 @@
-﻿using Data.Entities;
+﻿using Api.Models;
+using System.ComponentModel.DataAnnotations;
+using Data.Entities;
 using Domain.Services.Rooms;
 using Microsoft.AspNetCore.Mvc;
 using static Core.DTOs.Models.RoomDTO;
+using System.Net;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace Api.Controllers
 {
@@ -19,7 +23,7 @@ namespace Api.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> GetAsync()
+        public async Task<ActionResult<ApiResponse<List<RoomResponseDto>>>> GetAsync()
         {
             try
             {
@@ -28,18 +32,18 @@ namespace Api.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return StatusCode(500, ex.Message);
             }
         }
 
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetByIdAsync(long id)
+        public async Task<ActionResult<ApiResponse<RoomResponseDto>>> GetByIdAsync(long id)
         {
             try
             {
                 RoomResponseDto result = await _roomService.GetByIdAsync(id);
-                return Ok(result);
+                return Ok(ApiResponse<RoomResponseDto>.SuccessResult(result));
             }
             catch (Exception ex)
             {
@@ -49,27 +53,29 @@ namespace Api.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> CreateAsync(CreateRoomDto room)
+        public async Task<ActionResult<ApiResponse<RoomResponseDto>>> CreateAsync(CreateRoomDto room)
         {
             try
             {
-                long romId = await _roomService.CreateAsync(room);
-                return Created("", romId);
+                RoomResponseDto romItem = await _roomService.CreateAsync(room);
+                return Ok(ApiResponse<RoomResponseDto>.SuccessResult(romItem));
             }
-            catch (Exception ex)
+            catch (ValidationException ex) // TODO: нет свойства ex.Errors
             {
-                return BadRequest(ex.Message);
+                return BadRequest(ApiResponse<RoomResponseDto>.ErrorResult(
+                    "Validation failed",
+                    new List<string>() { ex.Message }));
             }
         }
 
 
         [HttpPut]
-        public async Task<IActionResult> UpdateAsync(UpdateRoomDto room)
+        public async Task<ActionResult<ApiResponse<RoomResponseDto>>> UpdateAsync(UpdateRoomDto room)
         {
             try
             {
-                await _roomService.UpdateAsync(room);
-                return await GetByIdAsync(room.Id);
+                RoomResponseDto romItem = await _roomService.UpdateAsync(room);
+                return Ok(ApiResponse<RoomResponseDto>.SuccessResult(romItem));                
             }
             catch (ArgumentException ex)
             {
@@ -83,10 +89,10 @@ namespace Api.Controllers
 
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAsync(long id)
+        public async Task<ActionResult<ApiResponse<bool>>> DeleteAsync(long id)
         {
             await _roomService.DeleteAsync(id);
-            return Ok();
+            return Ok(ApiResponse<bool>.SuccessResult(true)); // TODO: не понял что возвращать нужно
         }
     }
 }

@@ -8,8 +8,8 @@ namespace Domain.Services.Rooms
     {
         public Task<List<RoomResponseDto>> GetAsync();
         public Task<RoomResponseDto> GetByIdAsync(long id);
-        public Task<long> CreateAsync(CreateRoomDto room);
-        public Task UpdateAsync(UpdateRoomDto room);
+        public Task<RoomResponseDto> CreateAsync(CreateRoomDto room);
+        public Task<RoomResponseDto> UpdateAsync(UpdateRoomDto room);
         public Task DeleteAsync(long id);
     }
 }
