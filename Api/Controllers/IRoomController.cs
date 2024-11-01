@@ -1,5 +1,4 @@
 ﻿using Api.Models;
-using Data.Entities;
 using Microsoft.AspNetCore.Mvc;
 using static Core.DTOs.Models.RoomDTO;
 

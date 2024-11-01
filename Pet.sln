@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data", "Data\Data.csproj", "{103F87C6-7711-4E70-BB73-4F59C6184540}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{FF3C1515-0713-4AA5-A73B-8F39E0BE4284}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", "{FF3C1515-0713-4AA5-A73B-8F39E0BE4284}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

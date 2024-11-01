@@ -1,6 +1,5 @@
 ﻿using System.Data;
 using AutoMapper;
-using Core.DTOs.Models;
 using Data.Entities;
 using Data.Repository;
 using static Core.DTOs.Models.RoomDTO;

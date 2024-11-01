@@ -1,5 +1,4 @@
-﻿using System.Data;
-using Data.Entities;
+﻿using Data.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
@@ -40,18 +39,18 @@ namespace Data.Repository
         public async Task<Room> UpdateAsync(Room room)
         {
             Room roomItem = await _hotelManagerDbContext.Rooms.FirstOrDefaultAsync(r => r.Id == room.Id);
-            if (roomItem != null)
+            if (roomItem == null)
             {
-                roomItem.Number = room.Number; // TODO: А как тут делать? тоже маппером пользоваться?
+                throw new Exception("Failed to update 'Room'");
+            }
+            else
+            {
+                roomItem.Number = room.Number;
                 roomItem.RoomType = room.RoomType;
                 roomItem.Price = room.Price;
 
                 await _hotelManagerDbContext.SaveChangesAsync();
                 return roomItem;
-            }
-            else
-            {
-                throw new Exception("Failed to update 'Room'"); // TODO: Что возвращать? нужно ли вообще тут обрабатывать ошибки?
             }
         }
 

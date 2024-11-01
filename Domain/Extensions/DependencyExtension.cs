@@ -1,4 +1,5 @@
-﻿using Domain.Services.Rooms;
+﻿using Api;
+using Domain.Services.Rooms;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Domain.Extensions
@@ -7,7 +8,8 @@ namespace Domain.Extensions
     {
         public static void RegisterDomainDependencies(this IServiceCollection services)
         {
-            services.AddTransient<IRoomService, RoomService>();           
+            services.AddTransient<IRoomService, RoomService>();
+            services.AddAutoMapper(typeof(RoomsProfile));
         }
     }
 }

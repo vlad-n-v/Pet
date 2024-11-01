@@ -4,9 +4,9 @@ using static Core.DTOs.Models.RoomDTO;
 
 namespace Api
 {
-    public class AutoMapperProfile : Profile
+    public class RoomsProfile : Profile
     {
-        public AutoMapperProfile() // TODO: Не уверен что правильно разместил профиль. Как правильно регистрировать ?
+        public RoomsProfile()
         {
             CreateMap<Room, RoomResponseDto>().ReverseMap();
             CreateMap<Room, CreateRoomDto>().ReverseMap();

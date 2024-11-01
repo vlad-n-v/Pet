@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using Data.Enums;
 
 namespace Data.Entities
@@ -7,7 +6,6 @@ namespace Data.Entities
     public class Room
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]              
         public long Id { get; set; }
         public string Number { get; set; }
         public RoomTypes RoomType { get; set; }

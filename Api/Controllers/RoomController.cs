@@ -1,11 +1,8 @@
-﻿using Api.Models;
-using System.ComponentModel.DataAnnotations;
-using Data.Entities;
+﻿using System.ComponentModel.DataAnnotations;
+using Api.Models;
 using Domain.Services.Rooms;
 using Microsoft.AspNetCore.Mvc;
 using static Core.DTOs.Models.RoomDTO;
-using System.Net;
-using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace Api.Controllers
 {
@@ -13,7 +10,6 @@ namespace Api.Controllers
     [ApiController]
     public class RoomController : ControllerBase, IRoomController
     {
-
         private readonly IRoomService _roomService;
 
         public RoomController(IRoomService roomService)
@@ -60,7 +56,7 @@ namespace Api.Controllers
                 RoomResponseDto romItem = await _roomService.CreateAsync(room);
                 return Ok(ApiResponse<RoomResponseDto>.SuccessResult(romItem));
             }
-            catch (ValidationException ex) // TODO: нет свойства ex.Errors
+            catch (ValidationException ex)
             {
                 return BadRequest(ApiResponse<RoomResponseDto>.ErrorResult(
                     "Validation failed",
@@ -74,8 +70,8 @@ namespace Api.Controllers
         {
             try
             {
-                RoomResponseDto romItem = await _roomService.UpdateAsync(room);
-                return Ok(ApiResponse<RoomResponseDto>.SuccessResult(romItem));                
+                RoomResponseDto rommItem = await _roomService.UpdateAsync(room);
+                return Ok(ApiResponse<RoomResponseDto>.SuccessResult(rommItem));
             }
             catch (ArgumentException ex)
             {
@@ -92,7 +88,7 @@ namespace Api.Controllers
         public async Task<ActionResult<ApiResponse<bool>>> DeleteAsync(long id)
         {
             await _roomService.DeleteAsync(id);
-            return Ok(ApiResponse<bool>.SuccessResult(true)); // TODO: не понял что возвращать нужно
+            return Ok(ApiResponse<bool>.SuccessResult(true));
         }
     }
 }

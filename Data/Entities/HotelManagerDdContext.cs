@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace Data.Entities
 {
@@ -6,14 +7,19 @@ namespace Data.Entities
     {
         public DbSet<Room> Rooms { get; set; }
 
-
         public HotelManagerDdContext()
         {
             Database.EnsureCreated();
         }
 
-        public HotelManagerDdContext(DbContextOptions<HotelManagerDdContext> options) : base(options)
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            var settingPath = Path.GetFullPath(Path.Combine(@"../Data/appsettings.json"));
+            IConfiguration config = new ConfigurationBuilder()
+                .AddJsonFile(settingPath)
+                 .Build();
+            string connectionString = config.GetConnectionString("DefaultConnection");
+            optionsBuilder.UseNpgsql(connectionString);
 
         }
     }

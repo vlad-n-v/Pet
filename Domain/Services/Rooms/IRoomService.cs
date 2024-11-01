@@ -1,6 +1,4 @@
-﻿using Core.DTOs.Models;
-using Data.Entities;
-using static Core.DTOs.Models.RoomDTO;
+﻿using static Core.DTOs.Models.RoomDTO;
 
 namespace Domain.Services.Rooms
 {
