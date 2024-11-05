@@ -1,12 +1,6 @@
-
-using Api.Controllers;
 using Api.Extensions;
-
-using Data.Stores.Extensions;
-using Data.Stores.Room;
-
+using Data.Extensions;
 using Domain.Extensions;
-using Domain.Services.Room;
 
 namespace Api
 {
@@ -17,10 +11,10 @@ namespace Api
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            var services = builder.Services; // TODO: нужно ли объявлять отдельную переменную services? или лучше  builder.Services.RegisterApiDependencies();
-            services.RegisterApiDependencies(); // TODO: Порядок важен?
-            services.RegisterDomainDependencies();
-            services.RegisterDataDependencies();           
+            builder.Services.RegisterApiDependencies();
+            builder.Services.RegisterDomainDependencies();
+            builder.Services.RegisterDataDependencies();
+            builder.Services.AddControllersWithViews();
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -39,7 +33,6 @@ namespace Api
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 

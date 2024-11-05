@@ -39,6 +39,70 @@ Get — возвращает всю коллекцию и тд.
 
 
 
+## 5-Mapper
+
+Цель задачи - добавить больше DTO и маппер. 
+Сейчас для обновления, создания и тд есть всего одна DTO и это нарушает принцип SOLID, а именно букву S 
+(Рекомендую прочитать про SOLID - частый вопрос на собеседованиях)
+
+1 часть.
+1. Добавить Core проект типа Class Library (Если отсутствует). 
+2. Создать в проекте папку DTOs/Models(Любое название подойдет)
+3. В этой папке создать файл Room.cs в котором будут все наши DTO.
+4. Реализовать отдельные DTO для запросов создания, обновления.. и ответа. Именования: CreateProductDto.., ProductResponseDto    . 
+   То есть, например, CreateRoom принимает CreateProductDto и возвращает ProductResponseDto.
+5. Добавить AutoMapper для маппинга моделей https://code-maze.com/automapper-net-core/. Реализовать маппинг на слое бизнес логики
+
+2 часть. 
+Для унификации мы будем использовать Api Response Wrapper. Он унифицирует формат ответа и упрощает обработку результата запроса на клиента
+
+1. В API проекте необходимо создать папку "Models" и в ней файл "ApiResponse".
+    public class ApiResponse<T>
+    {
+        public bool Success { get; set; }
+        public string Message { get; set; }
+        public T Data { get; set; }
+        public List<string> Errors { get; set; }
+
+        public static ApiResponse<T> SuccessResult(T data, string message = null)
+        {
+            return new ApiResponse<T>
+            {
+                Success = true,
+                Message = message,
+                Data = data
+            };
+        }
+
+        public static ApiResponse<T> ErrorResult(string message, List<string> errors = null)
+        {
+            return new ApiResponse<T>
+            {
+                Success = false,
+                Message = message,
+                Errors = errors
+            };
+        }
+    }
+
+Тогда методы эндпоинта будет выглядеть примерно следующим образом:
+[HttpPost]
+public async Task<ActionResult<ApiResponse<ProductResponseDto>>> Create(CreateProductDto dto)
+{
+	// Это только вымышленный пример, модели, названия, сервисы будут другие
+    try
+    {
+        var result = await _productService.CreateAsync(dto);
+        return Ok(ApiResponse<ProductResponseDto>.SuccessResult(result));
+    }
+    catch (ValidationException ex) // Тут обрабатываются только те ошибки, которые выбрасываются на слое бизнес-логики. На все остальные выбрасывается 500
+    {
+        return BadRequest(ApiResponse<ProductResponseDto>.ErrorResult(
+            "Validation failed", 
+            ex.Errors.Select(e => e.ErrorMessage).ToList()));
+    }
+=======
+
 
 Цель задачи - добавить больше DTO и маппер. Сейчас для обновления, создания и тд есть всего одна DTO и это нарушает принцип SOLID, а именно букву S (Рекомендую прочитать про SOLID - частый вопрос на собеседованиях)
 

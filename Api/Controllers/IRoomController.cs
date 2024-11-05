@@ -1,15 +1,15 @@
-﻿using Data.Stores.Room.DTO;
-
+﻿using Api.Models;
 using Microsoft.AspNetCore.Mvc;
+using static Core.DTOs.Models.RoomDTO;
 
 namespace Api.Controllers
 {
     public interface IRoomController
     {
-        public IActionResult Get();
-        public IActionResult GetById(long id);
-        public IActionResult Create(RoomDTO room); // TODO: Что возвращать на слое API?
-        public IActionResult Update(long id, RoomDTO room); // TODO: IActionResult или ActionResult, почему?
-        public IActionResult Delete(long id);
+        public Task<ActionResult<ApiResponse<List<RoomResponseDto>>>> GetAsync();
+        public Task<ActionResult<ApiResponse<RoomResponseDto>>> GetByIdAsync(long id);
+        public Task<ActionResult<ApiResponse<RoomResponseDto>>> CreateAsync(CreateRoomDto room);
+        public Task<ActionResult<ApiResponse<RoomResponseDto>>> UpdateAsync(UpdateRoomDto room);
+        public Task<ActionResult<ApiResponse<bool>>> DeleteAsync(long id);
     }
 }
